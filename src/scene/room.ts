@@ -15,12 +15,12 @@ export class RoomScene extends Scene implements INode {
   }
 
   async initalize() {
-    await Promise.all(this.#objects.map((obj: any) => obj.initalize()));
     const { scene: room } = await LoaderUtil.loadGLTF('models/asmr_room.glb');
 
     this.background = new Color(0x00000);
     this.room = room;
     this.add(this.room);
+    await Promise.all(this.#objects.map((obj: any) => obj.initalize()));
   }
 
   update() {
