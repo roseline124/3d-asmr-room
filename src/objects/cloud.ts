@@ -9,11 +9,11 @@ import {
   Object3D,
   Vector3,
 } from 'three';
-import { MouseEventHandler } from '../handlers/handle-mouse-event';
+import { handleIconClick } from '../handlers/handle-icon-click';
+import { EventHandler } from '../models/event-handler';
 import { Node } from '../models/node';
 import { LoaderUtil } from '../utils/loader';
 import { AudioObject } from './audio';
-import { handleIconClick } from '../handlers/handle-icon-click';
 
 const raindropGeometry = new CylinderGeometry(0.01, 0.01, 0.2, 32);
 const raindropMaterial = new MeshBasicMaterial({
@@ -30,7 +30,7 @@ export class CloudObject extends Node {
   private cloud!: Object3D;
   private audio!: AudioObject;
 
-  constructor(private mouseEventHandler: MouseEventHandler) {
+  constructor(private mouseEventHandler: EventHandler) {
     super();
   }
 

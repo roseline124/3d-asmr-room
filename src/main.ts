@@ -13,6 +13,8 @@ import { CloudObject } from './objects/cloud';
 import { KeyboardObject } from './objects/keyboard/keyboard';
 import { LightObject } from './objects/light';
 import { RoomScene } from './scene/room';
+import { FootStepsObject } from './objects/footsteps/footsteps';
+import { FootStepMouseMoveHandler } from './objects/footsteps/handle-footstep-mouse-move';
 
 export const renderer = createWebGLRenderer();
 
@@ -42,6 +44,7 @@ scene.setObjects(
   new KeyboardObject(new MouseEventHandler(camera, controls)),
   new CloudObject(new MouseEventHandler(camera, controls)),
   new BookObject(new MouseEventHandler(camera, controls)),
+  new FootStepsObject(new FootStepMouseMoveHandler(camera, scene)),
 );
 scene.initalize();
 

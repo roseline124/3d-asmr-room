@@ -14,23 +14,7 @@ body {
   padding: 0;
 }
 
-#keyboard-icon {
-  background-image: url('/images/keyboard.png');
-
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-#book-icon {
-  background-image: url('/images/book.png');
-
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-#cloud-icon {
-  background-image: url('/images/cloud.png');
-
+.icon-bg {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;

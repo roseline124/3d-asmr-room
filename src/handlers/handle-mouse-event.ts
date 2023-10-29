@@ -1,7 +1,8 @@
 import { Object3D, PerspectiveCamera, Raycaster, Vector2 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { EventHandler } from '../models/event-handler';
 
-export class MouseEventHandler {
+export class MouseEventHandler implements EventHandler {
   private raycaster = new Raycaster();
   private mouse = new Vector2();
   private isDragging = false;

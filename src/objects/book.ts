@@ -1,6 +1,6 @@
 import { AnimationMixer, Clock, LoopRepeat, Object3D } from 'three';
 import { handleIconClick } from '../handlers/handle-icon-click';
-import { MouseEventHandler } from '../handlers/handle-mouse-event';
+import { EventHandler } from '../models/event-handler';
 import { AudioNode } from '../models/node';
 import { LoaderUtil } from '../utils/loader';
 import { AudioObject } from './audio';
@@ -11,7 +11,7 @@ export class BookObject extends AudioNode {
   private book!: Object3D;
   private audio!: AudioObject;
 
-  constructor(private mouseEventHandler: MouseEventHandler) {
+  constructor(private mouseEventHandler: EventHandler) {
     super();
   }
 
