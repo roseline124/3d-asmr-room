@@ -1,12 +1,20 @@
-import { Object3D, PerspectiveCamera, Raycaster, Scene, Vector2 } from 'three';
+import {
+  Object3D,
+  PerspectiveCamera,
+  Raycaster,
+  Scene,
+  Vector2,
+  Vector3,
+} from 'three';
 import { EventHandler } from '../../models/event-handler';
 import { FOOTSTEP_INIT_COUNT } from './constants';
 
 export class FootStepMouseMoveHandler implements EventHandler {
   private raycaster = new Raycaster();
   private lastFootstepTime = 0;
-  private footstepCooldown = 700; // create footstep in every 1000ms
+  private footstepCooldown = 700; // create footstep in every 700ms
   private isLeft = true;
+  private prevPosition: Vector3 | null = null;
 
   constructor(
     private camera: PerspectiveCamera,
@@ -39,6 +47,12 @@ export class FootStepMouseMoveHandler implements EventHandler {
           const point = intersects[0].point;
           footstep.position.copy(point);
           footstep.position.y = 0.05;
+          if (this.prevPosition != null) {
+            const direction = this.prevPosition.clone().sub(point);
+            const angleRadians = Math.atan2(direction.x, direction.z);
+            footstep.rotation.z = angleRadians;
+          }
+          this.prevPosition = point;
 
           if (this.isLeft) {
             footstep.scale.x = -1;

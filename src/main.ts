@@ -26,18 +26,15 @@ export const camera = new PerspectiveCamera(
   window.innerWidth / window.innerHeight,
   0.1,
   1000,
-); // FOV는 60으로 설정
+);
 camera.position.set(0, 7, -10);
-// camera.rotation.set(57.18, 0, 56.84);
 
 camera.updateProjectionMatrix();
 
 export const controls = new OrbitControls(camera, renderer.domElement);
 
 export const scene = new RoomScene();
-/**
- * 여기에 오브젝트들 추가
- */
+
 scene.setObjects(
   new LightObject(),
   new CatObject(),
@@ -49,7 +46,7 @@ scene.setObjects(
 scene.initalize();
 
 /**
- * main 함수
+ * main function
  */
 function loop() {
   requestAnimationFrame(loop);
@@ -70,9 +67,10 @@ function createWebGLRenderer() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.domElement.style.position = 'absolute';
   renderer.domElement.style.top = '0';
-  renderer.setClearColor(0x000000, 0); // 투명한 배경
+  renderer.setClearColor(0x000000, 0); // transparent bg
+
   /**
-   * 색상, 명암 개선
+   * improvement color tone
    */
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
