@@ -1,11 +1,11 @@
 import { Object3D, Vector3 } from 'three';
 import { Tween } from 'three/examples/jsm/libs/tween.module.js';
-import { MouseEventHandler } from '../../handlers/handle-mouse-event';
 import { AudioNode } from '../../models/node';
 import { LoaderUtil } from '../../utils/loader';
 import { AudioObject } from '../audio';
 import { KeyboardModal } from './modal';
 import { handleIconClick } from '../../handlers/handle-icon-click';
+import { EventHandler } from '../../models/event-handler';
 
 export class KeyboardObject extends AudioNode {
   private keyboard!: Object3D;
@@ -18,7 +18,7 @@ export class KeyboardObject extends AudioNode {
   private originalKeyYPosition!: number;
   private modal = new KeyboardModal();
 
-  constructor(private mouseEventHandler: MouseEventHandler) {
+  constructor(private mouseEventHandler: EventHandler) {
     super();
   }
 
