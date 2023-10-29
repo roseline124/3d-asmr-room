@@ -29,13 +29,15 @@ export class KeyboardModal {
       modalEl.classList.add('hidden');
     });
 
-    document.getElementById('keyboard-icon')?.addEventListener('click', () => {
-      if (modalEl && inputEl) {
-        this.modalOpen = true;
-        modalEl.classList.remove('hidden');
-        inputEl.focus();
-      }
-    });
+    document
+      .getElementById('keyboard-typing-text-icon')
+      ?.addEventListener('click', () => {
+        if (modalEl && inputEl) {
+          this.modalOpen = true;
+          modalEl.classList.remove('hidden');
+          inputEl.focus();
+        }
+      });
 
     formEl?.addEventListener('submit', async (event) => {
       event.preventDefault();

@@ -15,19 +15,50 @@ body {
 }
 
 #keyboard-icon {
-  width: 100px;
-  height: 100px;
-  position: fixed;
-  top: 30px;
-  right: 30px;
-  cursor: pointer;
-
-  border-radius: 50%;
-
   background-image: url('/images/keyboard.png');
 
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: yellow;
+}
+#book-icon {
+  background-image: url('/images/book.png');
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#cloud-icon {
+  background-image: url('/images/cloud.png');
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#keyboard-icon-container {
+  @apply flex;
+}
+
+#keyboard-icon-container:hover #keyboard-typing-text-icon {
+  display: flex;
+  animation: fadeIn 0.3s;
+}
+
+#keyboard-typing-text-icon {
+  display: none;
+  transition: opacity 0.3s;
+}
+
+.icon-text {
+  @apply text-white text-2xl;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

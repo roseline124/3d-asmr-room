@@ -1,12 +1,13 @@
 import { Object3D, Vector3 } from 'three';
 import { Tween } from 'three/examples/jsm/libs/tween.module.js';
 import { MouseEventHandler } from '../../handlers/handle-mouse-event';
-import { Node } from '../../models/node';
+import { AudioNode } from '../../models/node';
 import { LoaderUtil } from '../../utils/loader';
 import { AudioObject } from '../audio';
 import { KeyboardModal } from './modal';
+import { handleIconClick } from '../../handlers/handle-icon-click';
 
-export class KeyboardObject extends Node {
+export class KeyboardObject extends AudioNode {
   private keyboard!: Object3D;
   private audioKey1!: AudioObject;
   private audioKey2!: AudioObject;
@@ -26,6 +27,7 @@ export class KeyboardObject extends Node {
       'models/keyboard.glb',
     );
     this.keyboard = keyboard;
+    this.keyboard.visible = false;
     this.add(keyboard);
 
     const enterKey = this.getTargetKeyObject('Enter');
@@ -58,8 +60,14 @@ export class KeyboardObject extends Node {
 
     window.addEventListener('keydown', this.handleKeydown.bind(this));
     this.mouseEventHandler.handle(this.keyboard);
+    handleIconClick('keyboard-icon', this);
 
     this.keyboard.position.x -= 1;
+  }
+
+  toggle() {
+    const turnedOn = this.keyboard.visible === true;
+    this.keyboard.visible = !turnedOn;
   }
 
   update() {

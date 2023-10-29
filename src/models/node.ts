@@ -9,3 +9,9 @@ export class Node extends Object3D implements INode {
   public async initalize() {}
   public update() {}
 }
+
+export class AudioNode extends Object3D implements INode {
+  public async initalize() {}
+  public toggle() {}
+  public update() {}
+}
