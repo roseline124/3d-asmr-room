@@ -1,15 +1,9 @@
-import {
-  AnimationClip,
-  AnimationMixer,
-  Clock,
-  LoopRepeat,
-  Object3D,
-} from 'three';
+import { AnimationMixer, Clock, LoopRepeat, Object3D } from 'three';
+import { handleIconClick } from '../handlers/handle-icon-click';
 import { MouseEventHandler } from '../handlers/handle-mouse-event';
 import { AudioNode } from '../models/node';
 import { LoaderUtil } from '../utils/loader';
 import { AudioObject } from './audio';
-import { handleIconClick } from '../handlers/handle-icon-click';
 
 export class BookObject extends AudioNode {
   private clock = new Clock();
