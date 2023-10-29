@@ -47,6 +47,10 @@ export class FootStepMouseMoveHandler implements EventHandler {
           const point = intersects[0].point;
           footstep.position.copy(point);
           footstep.position.y = 0.05;
+
+          /**
+           * footstep angle
+           */
           if (this.prevPosition != null) {
             const direction = this.prevPosition.clone().sub(point);
             const angleRadians = Math.atan2(direction.x, direction.z);
@@ -54,6 +58,9 @@ export class FootStepMouseMoveHandler implements EventHandler {
           }
           this.prevPosition = point;
 
+          /**
+           * audio
+           */
           if (this.isLeft) {
             footstep.scale.x = -1;
             object.userData.audioLeft.repeat();
