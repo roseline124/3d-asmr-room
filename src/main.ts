@@ -1,3 +1,4 @@
+import './style.css';
 import {
   ACESFilmicToneMapping,
   PerspectiveCamera,
@@ -9,7 +10,7 @@ import { MouseEventHandler } from './handlers/handle-mouse-event';
 import { BookObject } from './objects/book';
 import { CatObject } from './objects/cat';
 import { CloudObject } from './objects/cloud';
-import { KeyboardObject } from './objects/keyboard';
+import { KeyboardObject } from './objects/keyboard/keyboard';
 import { LightObject } from './objects/light';
 import { RoomScene } from './scene/room';
 

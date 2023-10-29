@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#keyboard-icon {
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+
+  border-radius: 50%;
+
+  background-image: url('/images/keyboard.png');
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: yellow;
+}

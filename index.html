@@ -6,8 +6,6 @@
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
-
-    <link rel="stylesheet" href="css/main.css" />
     <title>ASMR room</title>
   </head>
   <body>
@@ -27,30 +25,46 @@
         z-index: 1;
       "
     >
-      <p>Loading...</p>
-      <div
-        id="progress-container"
-        style="
-          width: 60%;
-          height: 20px;
-          border: 1px solid #000;
-          background-color: #eee;
-          border-radius: 20px;
-        "
-      >
-        <div
-          id="progress-bar"
-          style="
-            height: 100%;
-            width: 0;
-            background-color: #538d8b;
-            border-radius: 20px;
-          "
-        ></div>
+      <div class="w-1/2">
+        <div class="mb-1 text-lg font-medium dark:text-white text-center">
+          Loading...
+        </div>
+        <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
+          <div class="h-6 bg-yellow-300 rounded-full dark:bg-yellow-100"></div>
+        </div>
       </div>
     </div>
 
     <div id="app"></div>
+
+    <div id="keyboard-icon"></div>
+
+    <div
+      id="keyboard-modal"
+      class="fixed top-0 left-0 w-full h-full bg-gray-700 bg-opacity-50 flex items-center justify-center hidden"
+    >
+      <div
+        id="keyboard-modal-content"
+        class="bg-white rounded-lg p-8 shadow-lg"
+      >
+        <h2 class="text-xl mb-4">ASMR Text</h2>
+        <form id="keyboard-form">
+          <input
+            type="text"
+            id="keyboard-input"
+            class="w-full p-2 border rounded"
+            placeholder="Enter your text..."
+          />
+          <button
+            type="submit"
+            id="keyboard-modal-submit-btn"
+            class="mt-4 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          >
+            enter
+          </button>
+        </form>
+      </div>
+    </div>
 
     <script type="module" src="/src/main.ts"></script>
   </body>

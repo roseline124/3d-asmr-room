@@ -1,9 +1,10 @@
 import { Object3D, Vector3 } from 'three';
 import { Tween } from 'three/examples/jsm/libs/tween.module.js';
-import { MouseEventHandler } from '../handlers/handle-mouse-event';
-import { Node } from '../models/node';
-import { LoaderUtil } from '../utils/loader';
-import { AudioObject } from './audio';
+import { MouseEventHandler } from '../../handlers/handle-mouse-event';
+import { Node } from '../../models/node';
+import { LoaderUtil } from '../../utils/loader';
+import { AudioObject } from '../audio';
+import { KeyboardModal } from './modal';
 
 export class KeyboardObject extends Node {
   private keyboard!: Object3D;
@@ -14,6 +15,7 @@ export class KeyboardObject extends Node {
   private tweenKeyDown?: Tween<Vector3>;
   private tweenKeyUp?: Tween<Vector3>;
   private originalKeyYPosition!: number;
+  private modal = new KeyboardModal();
 
   constructor(private mouseEventHandler: MouseEventHandler) {
     super();
@@ -70,6 +72,10 @@ export class KeyboardObject extends Node {
   }
 
   private handleKeydown(event: KeyboardEvent) {
+    if (this.modal.modalOpen) {
+      return;
+    }
+
     const targetObject = this.getTargetKeyObject(event.code);
     if (!targetObject) {
       return;
