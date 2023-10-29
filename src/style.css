@@ -14,12 +14,6 @@ body {
   padding: 0;
 }
 
-.icon-bg {
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 #keyboard-icon-container {
   @apply flex;
 }
@@ -32,6 +26,13 @@ body {
 #keyboard-typing-text-icon {
   display: none;
   transition: opacity 0.3s;
+}
+
+#github-icon {
+  background: url('/images/github-mark-white.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .icon-text {
