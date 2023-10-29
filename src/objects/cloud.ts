@@ -13,6 +13,7 @@ import { MouseEventHandler } from '../handlers/handle-mouse-event';
 import { Node } from '../models/node';
 import { LoaderUtil } from '../utils/loader';
 import { AudioObject } from './audio';
+import { handleIconClick } from '../handlers/handle-icon-click';
 
 const raindropGeometry = new CylinderGeometry(0.01, 0.01, 0.2, 32);
 const raindropMaterial = new MeshBasicMaterial({
@@ -37,21 +38,38 @@ export class CloudObject extends Node {
     const { scene: cloud, animations } =
       await LoaderUtil.loadGLTF('models/cloud.glb');
     this.cloud = cloud;
+    this.cloud.visible = false;
     this.add(cloud);
 
     this.cloudBox = new Box3().setFromObject(this.cloud);
     this.audio = new AudioObject('sounds/rain.mp3', this.cloud.position);
     await this.audio.loadAudio();
-    this.audio.play();
 
     this.mouseEventHandler.handle(this.cloud);
+    handleIconClick('cloud-icon', this);
 
     this.mixer = new AnimationMixer(cloud);
-    animations.forEach((clip) => {
-      const action = this.mixer.clipAction(clip);
-      action.setLoop(LoopRepeat, Infinity);
-      action.play();
-    });
+    this.animations = animations;
+  }
+
+  toggle() {
+    const turnedOn = this.cloud.visible === true;
+    this.cloud.visible = !turnedOn;
+
+    if (this.cloud.visible) {
+      this.audio.play();
+      this.animations.forEach((clip) => {
+        const action = this.mixer.clipAction(clip);
+        action.setLoop(LoopRepeat, Infinity);
+        action.play();
+      });
+    } else {
+      this.audio.stop();
+      this.animations.forEach((clip) => {
+        const action = this.mixer.clipAction(clip);
+        action.stop();
+      });
+    }
   }
 
   update() {

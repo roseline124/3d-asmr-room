@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#keyboard-icon {
+  background-image: url('/images/keyboard.png');
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#book-icon {
+  background-image: url('/images/book.png');
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#cloud-icon {
+  background-image: url('/images/cloud.png');
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#keyboard-icon-container {
+  @apply flex;
+}
+
+#keyboard-icon-container:hover #keyboard-typing-text-icon {
+  display: flex;
+  animation: fadeIn 0.3s;
+}
+
+#keyboard-typing-text-icon {
+  display: none;
+  transition: opacity 0.3s;
+}
+
+.icon-text {
+  @apply text-white text-2xl;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

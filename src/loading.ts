@@ -10,7 +10,7 @@ manager.onLoad = function () {
   if (!loadingScreen) {
     return;
   }
-  loadingScreen.style.display = 'none'; // 로딩 페이지 숨기기
+  loadingScreen.style.display = 'none';
 };
 
 manager.onProgress = function (_url, itemsLoaded, itemsTotal) {

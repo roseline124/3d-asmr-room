@@ -58,6 +58,11 @@ export class AudioObject {
     this.source.start();
   }
 
+  stop() {
+    this.source.stop();
+    this.init();
+  }
+
   repeat() {
     this.init();
     this.play();
