@@ -5,8 +5,6 @@ import { FootStepsObject } from '../objects/footsteps/footsteps';
 
 export class FootStepMouseMoveHandler implements IEventHandler {
   private raycaster = new Raycaster();
-  private isDragging = false;
-  private mouse = new Vector2();
   private lastFootstepTime = 0;
   private footstepCooldown = 700; // create footstep in every 700ms
 
