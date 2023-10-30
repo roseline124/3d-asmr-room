@@ -6,10 +6,10 @@ import {
   Vector2,
   Vector3,
 } from 'three';
-import { EventHandler } from '../../models/event-handler';
-import { FOOTSTEP_INIT_COUNT } from './constants';
+import { FOOTSTEP_INIT_COUNT } from '../objects/footsteps/constants';
+import { IEventHandler } from '../models/event-handler';
 
-export class FootStepMouseMoveHandler implements EventHandler {
+export class FootStepMouseMoveHandler implements IEventHandler {
   private raycaster = new Raycaster();
   private lastFootstepTime = 0;
   private footstepCooldown = 700; // create footstep in every 700ms
@@ -19,11 +19,12 @@ export class FootStepMouseMoveHandler implements EventHandler {
   constructor(
     private camera: PerspectiveCamera,
     private scene: Scene,
+    private object: Object3D,
   ) {}
 
-  handle(object: Object3D) {
+  handle() {
     document.addEventListener('mousemove', (event) => {
-      if (!object.visible) {
+      if (!this.object.visible) {
         return;
       }
 
@@ -38,10 +39,10 @@ export class FootStepMouseMoveHandler implements EventHandler {
       if (currentTime - this.lastFootstepTime >= this.footstepCooldown) {
         if (intersects.length > 0) {
           const footstep =
-            object.children[
-              object.userData.currentIndex++ % FOOTSTEP_INIT_COUNT
+            this.object.children[
+              this.object.userData.currentIndex++ % FOOTSTEP_INIT_COUNT
             ];
-          object.userData.currentIndex += 1;
+          this.object.userData.currentIndex += 1;
 
           footstep.visible = true;
           const point = intersects[0].point;
@@ -63,9 +64,9 @@ export class FootStepMouseMoveHandler implements EventHandler {
            */
           if (this.isLeft) {
             footstep.scale.x = -1;
-            object.userData.audioLeft.repeat();
+            this.object.userData.audioLeft.repeat();
           } else {
-            object.userData.audioRight.repeat();
+            this.object.userData.audioRight.repeat();
           }
 
           this.isLeft = !this.isLeft;

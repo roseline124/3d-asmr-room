@@ -9,10 +9,8 @@ import {
   Object3D,
   Vector3,
 } from 'three';
-import { handleIconClick } from '../handlers/handle-icon-click';
 import { IAudio } from '../models/audio';
-import { EventHandler } from '../models/event-handler';
-import { Node } from '../models/node';
+import { ToggleNode } from '../models/node';
 import { LoaderUtil } from '../utils/loader';
 
 const raindropGeometry = new CylinderGeometry(0.01, 0.01, 0.2, 32);
@@ -22,17 +20,14 @@ const raindropMaterial = new MeshBasicMaterial({
   opacity: 0.3,
 });
 
-export class CloudObject extends Node {
+export class CloudObject extends ToggleNode {
   private clock = new Clock();
   private mixer!: AnimationMixer;
   private raindrops: Mesh[] = [];
   private cloudBox!: Box3;
   private cloud!: Object3D;
 
-  constructor(
-    private mouseEventHandler: EventHandler,
-    private audio: IAudio,
-  ) {
+  constructor(private audio: IAudio) {
     super();
   }
 
@@ -45,9 +40,6 @@ export class CloudObject extends Node {
 
     this.cloudBox = new Box3().setFromObject(this.cloud);
     await this.audio.loadAudio();
-
-    this.mouseEventHandler.handle(this.cloud);
-    handleIconClick('cloud-icon', this);
 
     this.mixer = new AnimationMixer(cloud);
     this.animations = animations;

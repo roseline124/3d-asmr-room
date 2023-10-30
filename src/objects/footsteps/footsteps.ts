@@ -1,16 +1,11 @@
 import { DoubleSide, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
-import { handleIconClick } from '../../handlers/handle-icon-click';
 import { IAudio } from '../../models/audio';
-import { EventHandler } from '../../models/event-handler';
-import { AudioNode } from '../../models/node';
+import { ToggleNode } from '../../models/node';
 import { LoaderUtil } from '../../utils/loader';
 import { FOOTSTEP_INIT_COUNT } from './constants';
 
-export class FootStepsObject extends AudioNode {
-  constructor(
-    private eventHandler: EventHandler,
-    private audios: IAudio[],
-  ) {
+export class FootStepsObject extends ToggleNode {
+  constructor(private audios: IAudio[]) {
     super();
   }
 
@@ -33,9 +28,6 @@ export class FootStepsObject extends AudioNode {
       this.addObject(footstepGeometry, footstepMaterial);
     }
     this.userData.currentIndex = 0;
-    this.eventHandler.handle(this);
-
-    handleIconClick('footstep-icon', this);
   }
 
   private addObject(geometry: PlaneGeometry, material: MeshBasicMaterial) {

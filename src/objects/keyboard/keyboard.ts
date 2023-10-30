@@ -1,13 +1,11 @@
 import { Object3D, Vector3 } from 'three';
 import { Tween } from 'three/examples/jsm/libs/tween.module.js';
-import { handleIconClick } from '../../handlers/handle-icon-click';
 import { IAudio } from '../../models/audio';
-import { EventHandler } from '../../models/event-handler';
-import { AudioNode } from '../../models/node';
+import { ToggleNode } from '../../models/node';
 import { LoaderUtil } from '../../utils/loader';
 import { KeyboardModal } from './modal';
 
-export class KeyboardObject extends AudioNode {
+export class KeyboardObject extends ToggleNode {
   private keyboard!: Object3D;
 
   private tweenKeyDown?: Tween<Vector3>;
@@ -15,10 +13,7 @@ export class KeyboardObject extends AudioNode {
   private originalKeyYPosition!: number;
   private modal = new KeyboardModal();
 
-  constructor(
-    private mouseEventHandler: EventHandler,
-    private audios: IAudio[],
-  ) {
+  constructor(private audios: IAudio[]) {
     super();
   }
 
@@ -40,8 +35,6 @@ export class KeyboardObject extends AudioNode {
     await Promise.all(this.audios.map((audio) => audio.loadAudio()));
 
     window.addEventListener('keydown', this.handleKeydown.bind(this));
-    this.mouseEventHandler.handle(this.keyboard);
-    handleIconClick('keyboard-icon', this);
 
     this.keyboard.position.x -= 1;
   }
@@ -52,6 +45,10 @@ export class KeyboardObject extends AudioNode {
   }
 
   update() {
+    if (!this.keyboard) {
+      return;
+    }
+
     this.tweenKeyDown?.update();
     this.tweenKeyUp?.update();
 
