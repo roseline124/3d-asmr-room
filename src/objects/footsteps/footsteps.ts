@@ -1,10 +1,19 @@
-import { DoubleSide, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
+import {
+  DoubleSide,
+  Mesh,
+  MeshBasicMaterial,
+  PlaneGeometry,
+  Vector3,
+} from 'three';
 import { IAudio } from '../../models/audio';
 import { ToggleNode } from '../../models/node';
 import { LoaderUtil } from '../../utils/loader';
 import { FOOTSTEP_INIT_COUNT } from './constants';
 
 export class FootStepsObject extends ToggleNode {
+  private currentFootStepIndex = 0;
+  private prevPosition: Vector3 | null = null;
+
   constructor(private audios: IAudio[]) {
     super();
   }
@@ -19,22 +28,18 @@ export class FootStepsObject extends ToggleNode {
       side: DoubleSide,
     });
 
-    this.userData.audioLeft = this.audios[0];
-    this.userData.audioRight = this.audios[1];
-    await this.userData.audioLeft.loadAudio();
-    await this.userData.audioRight.loadAudio();
+    await Promise.all(this.audios.map((audio) => audio.loadAudio()));
 
     for (let index = 0; index < FOOTSTEP_INIT_COUNT; index++) {
       this.addObject(footstepGeometry, footstepMaterial);
     }
-    this.userData.currentIndex = 0;
   }
 
   private addObject(geometry: PlaneGeometry, material: MeshBasicMaterial) {
     const footstep = new Mesh(geometry, material);
     footstep.visible = false;
     footstep.rotation.x = -Math.PI / 2;
-    this.children.push(footstep);
+    this.add(footstep);
   }
 
   public toggle(): void {
@@ -44,11 +49,41 @@ export class FootStepsObject extends ToggleNode {
 
   update(): void {
     const lastFootstep =
-      this.children[this.userData.currentIndex % FOOTSTEP_INIT_COUNT];
+      this.children[(this.currentFootStepIndex - 1) % FOOTSTEP_INIT_COUNT];
+
     if (!lastFootstep) {
       return;
     }
-    this.userData.audioLeft?.updatePosition(lastFootstep.position);
-    this.userData.audioRight?.updatePosition(lastFootstep.position);
+    this.audios.forEach((audio) => audio.updatePosition(lastFootstep.position));
+  }
+
+  updateFootStepPosition(newPosition: Vector3) {
+    const footstep =
+      this.children[this.currentFootStepIndex % FOOTSTEP_INIT_COUNT];
+    this.currentFootStepIndex++;
+
+    footstep.visible = true;
+    footstep.position.copy(newPosition);
+    footstep.position.y = 0.05;
+
+    /**
+     * footstep angle
+     */
+    if (this.prevPosition != null) {
+      const direction = this.prevPosition.clone().sub(newPosition);
+      const angleRadians = Math.atan2(direction.x, direction.z);
+      footstep.rotation.z = angleRadians;
+    }
+    this.prevPosition = newPosition;
+
+    /**
+     * audio
+     */
+    if (this.currentFootStepIndex % 2 === 1) {
+      footstep.scale.x = -1;
+      this.audios[0].repeat();
+    } else {
+      this.audios[1].repeat();
+    }
   }
 }
