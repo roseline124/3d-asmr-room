@@ -8,83 +8,75 @@
     />
     <title>ASMR room</title>
   </head>
-  <body>
+  <body class="antialiased">
     <div
       id="loading-page"
-      style="
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background-color: rgba(255, 255, 255, 0.9);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        z-index: 1;
-      "
+      class="fixed inset-0 bg-white flex items-center justify-center"
     >
-      <div class="w-1/2">
-        <div class="mb-1 text-lg font-medium dark:text-white text-center">
+      <div class="w-11/12 sm:w-8/12 md:w-1/2">
+        <div
+          class="text-lg font-medium text-center text-gray-800 dark:text-white"
+        >
           Loading...
         </div>
-        <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
-          <div class="h-6 bg-yellow-300 rounded-full dark:bg-yellow-100"></div>
+        <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+          <div class="h-6 bg-yellow-300 rounded-full dark:bg-yellow-600"></div>
         </div>
       </div>
     </div>
 
-    <div id="app"></div>
+    <div id="app" class="w-full h-screen"></div>
 
-    <div class="fixed top-10 right-10 flex flex-col items-end">
+    <div
+      class="fixed top-2 right-2 flex flex-col items-end space-y-2 md:space-y-3 md:top-10 md:right-10 render-after-loading"
+    >
       <div
         id="cloud-icon"
-        class="bg-yellow-500 w-20 h-20 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl"
+        class="w-16 h-16 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-yellow-500 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl"
       >
         🌧️
       </div>
       <div id="keyboard-icon-container">
         <div
           id="keyboard-typing-text-icon"
-          class="bg-yellow-500 w-20 h-20 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl mr-3"
+          class="w-16 h-16 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-yellow-500 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl mr-3"
         >
           🔤
         </div>
         <div
           id="keyboard-icon"
-          class="bg-yellow-500 w-20 h-20 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl"
+          class="w-16 h-16 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-yellow-500 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl"
         >
           ⌨️
         </div>
       </div>
       <div
         id="book-icon"
-        class="bg-yellow-500 w-20 h-20 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl"
+        class="w-16 h-16 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-yellow-500 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl"
       >
         📖
       </div>
       <div
         id="footstep-icon"
-        class="bg-yellow-500 w-20 h-20 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl"
+        class="w-16 h-16 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-yellow-500 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl"
       >
         👞
       </div>
       <a target="_blank" href="https://github.com/roseline124/3d-asmr-room">
         <div
           id="github-icon"
-          class="bg-yellow-500 w-20 h-20 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl"
+          class="w-16 h-16 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-yellow-500 rounded-full cursor-pointer mb-3 flex items-center justify-center text-4xl"
         ></div>
       </a>
     </div>
 
     <div
       id="keyboard-modal"
-      class="fixed top-0 left-0 w-full h-full bg-gray-700 bg-opacity-50 flex items-center justify-center hidden"
+      class="fixed top-0 left-0 w-full h-full bg-gray-700 bg-opacity-50 flex items-center justify-center hidden render-after-loading"
     >
       <div
         id="keyboard-modal-content"
-        class="bg-white rounded-lg p-8 shadow-lg"
+        class="bg-white rounded-lg p-8 shadow-lg m-10"
       >
         <h2 class="text-xl mb-4">ASMR Text</h2>
         <form id="keyboard-form">

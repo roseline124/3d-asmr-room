@@ -18,6 +18,10 @@ import { AudioObject } from './objects/audio';
 import { IconClickHandler } from './handlers/icon-click-handler';
 import { FootStepMouseMoveHandler } from './handlers/footstep-mouse-move-handler';
 
+const initialWindowSize = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
 export const renderer = createWebGLRenderer();
 
 const app = document.getElementById('app');
@@ -34,6 +38,16 @@ camera.position.set(0, 7, -10);
 camera.updateProjectionMatrix();
 
 export const controls = new OrbitControls(camera, renderer.domElement);
+
+window.addEventListener('resize', onWindowResize, false);
+
+function onWindowResize() {
+  const aspectRatioChange = window.innerWidth / initialWindowSize.width + 0.2;
+  camera.zoom = aspectRatioChange;
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
 export const scene = new RoomScene();
 
@@ -67,13 +81,10 @@ scene.handleEvents([
   new IconClickHandler('cloud-icon', cloudObject),
   new IconClickHandler('book-icon', bookObject),
   new IconClickHandler('footstep-icon', footstepsObject),
-  new FootStepMouseMoveHandler(camera, scene, footstepsObject),
+  new FootStepMouseMoveHandler(camera, controls, scene, footstepsObject),
 ]);
 scene.initalize();
 
-/**
- * main function
- */
 function loop() {
   requestAnimationFrame(loop);
   scene.update();
