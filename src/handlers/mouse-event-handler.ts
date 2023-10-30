@@ -1,6 +1,7 @@
-import { Object3D, PerspectiveCamera, Raycaster, Vector2 } from 'three';
+import { PerspectiveCamera, Raycaster, Vector2 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { IEventHandler } from '../models/event-handler';
+import { ToggleNode } from '../models/node';
 
 export class MouseEventHandler implements IEventHandler {
   private raycaster = new Raycaster();
@@ -10,7 +11,7 @@ export class MouseEventHandler implements IEventHandler {
   constructor(
     private camera: PerspectiveCamera,
     private controls: OrbitControls,
-    private object: Object3D,
+    private object: ToggleNode,
   ) {}
 
   handle() {
