@@ -81,7 +81,7 @@ scene.handleEvents([
   new IconClickHandler('cloud-icon', cloudObject),
   new IconClickHandler('book-icon', bookObject),
   new IconClickHandler('footstep-icon', footstepsObject),
-  new FootStepMouseMoveHandler(camera, scene, footstepsObject),
+  new FootStepMouseMoveHandler(camera, controls, scene, footstepsObject),
 ]);
 scene.initalize();
 
