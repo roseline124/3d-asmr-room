@@ -1,19 +1,16 @@
-import {
-  DoubleSide,
-  Mesh,
-  MeshBasicMaterial,
-  PlaneGeometry,
-  Vector3,
-} from 'three';
+import { DoubleSide, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
+import { handleIconClick } from '../../handlers/handle-icon-click';
+import { IAudio } from '../../models/audio';
 import { EventHandler } from '../../models/event-handler';
 import { AudioNode } from '../../models/node';
 import { LoaderUtil } from '../../utils/loader';
 import { FOOTSTEP_INIT_COUNT } from './constants';
-import { AudioObject } from '../audio';
-import { handleIconClick } from '../../handlers/handle-icon-click';
 
 export class FootStepsObject extends AudioNode {
-  constructor(private eventHandler: EventHandler) {
+  constructor(
+    private eventHandler: EventHandler,
+    private audios: IAudio[],
+  ) {
     super();
   }
 
@@ -27,16 +24,8 @@ export class FootStepsObject extends AudioNode {
       side: DoubleSide,
     });
 
-    this.userData.audioLeft = new AudioObject(
-      'sounds/footstep_left.mp3',
-      new Vector3(0.5, 0.5, 0.5),
-      false,
-    );
-    this.userData.audioRight = new AudioObject(
-      'sounds/footstep_right.mp3',
-      new Vector3(0.5, 0.5, 0.5),
-      false,
-    );
+    this.userData.audioLeft = this.audios[0];
+    this.userData.audioRight = this.audios[1];
     await this.userData.audioLeft.loadAudio();
     await this.userData.audioRight.loadAudio();
 

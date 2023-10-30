@@ -15,6 +15,7 @@ import { LightObject } from './objects/light';
 import { RoomScene } from './scene/room';
 import { FootStepsObject } from './objects/footsteps/footsteps';
 import { FootStepMouseMoveHandler } from './objects/footsteps/handle-footstep-mouse-move';
+import { AudioObject } from './objects/audio';
 
 export const renderer = createWebGLRenderer();
 
@@ -38,10 +39,23 @@ export const scene = new RoomScene();
 scene.setObjects(
   new LightObject(),
   new CatObject(),
-  new KeyboardObject(new MouseEventHandler(camera, controls)),
-  new CloudObject(new MouseEventHandler(camera, controls)),
-  new BookObject(new MouseEventHandler(camera, controls)),
-  new FootStepsObject(new FootStepMouseMoveHandler(camera, scene)),
+  new KeyboardObject(new MouseEventHandler(camera, controls), [
+    new AudioObject('sounds/keyboard1.mp3', false),
+    new AudioObject('sounds/keyboard2.mp3', false),
+    new AudioObject('sounds/keyboard3.mp3', false),
+  ]),
+  new CloudObject(
+    new MouseEventHandler(camera, controls),
+    new AudioObject('sounds/rain.mp3'),
+  ),
+  new BookObject(
+    new MouseEventHandler(camera, controls),
+    new AudioObject('sounds/book.mp3'),
+  ),
+  new FootStepsObject(new FootStepMouseMoveHandler(camera, scene), [
+    new AudioObject('sounds/footstep_left.mp3', false),
+    new AudioObject('sounds/footstep_right.mp3', false),
+  ]),
 );
 scene.initalize();
 

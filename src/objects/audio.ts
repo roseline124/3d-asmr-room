@@ -1,6 +1,7 @@
 import { Vector3 } from 'three';
+import { IAudio } from '../models/audio';
 
-export class AudioObject {
+export class AudioObject implements IAudio {
   private panner: PannerNode;
   private audioContext: AudioContext;
   private source: AudioBufferSourceNode;
@@ -8,11 +9,9 @@ export class AudioObject {
 
   constructor(
     private filePath: string,
-    private position: Vector3,
     private loop = true,
   ) {
     const audioContext = new AudioContext();
-
     this.audioContext = audioContext;
 
     this.source = this.audioContext.createBufferSource();
@@ -38,8 +37,6 @@ export class AudioObject {
     const arrayBuffer = await response.arrayBuffer();
     this.buffer = await this.audioContext.decodeAudioData(arrayBuffer);
     this.init();
-
-    return this;
   }
 
   private init() {
@@ -69,9 +66,8 @@ export class AudioObject {
   }
 
   updatePosition(newPosition: Vector3) {
-    this.position = newPosition;
-    this.panner.positionX.value = this.position.x;
-    this.panner.positionY.value = this.position.y;
-    this.panner.positionZ.value = this.position.z;
+    this.panner.positionX.value = newPosition.x;
+    this.panner.positionY.value = newPosition.y;
+    this.panner.positionZ.value = newPosition.z;
   }
 }

@@ -10,10 +10,10 @@ import {
   Vector3,
 } from 'three';
 import { handleIconClick } from '../handlers/handle-icon-click';
+import { IAudio } from '../models/audio';
 import { EventHandler } from '../models/event-handler';
 import { Node } from '../models/node';
 import { LoaderUtil } from '../utils/loader';
-import { AudioObject } from './audio';
 
 const raindropGeometry = new CylinderGeometry(0.01, 0.01, 0.2, 32);
 const raindropMaterial = new MeshBasicMaterial({
@@ -28,9 +28,11 @@ export class CloudObject extends Node {
   private raindrops: Mesh[] = [];
   private cloudBox!: Box3;
   private cloud!: Object3D;
-  private audio!: AudioObject;
 
-  constructor(private mouseEventHandler: EventHandler) {
+  constructor(
+    private mouseEventHandler: EventHandler,
+    private audio: IAudio,
+  ) {
     super();
   }
 
@@ -42,7 +44,6 @@ export class CloudObject extends Node {
     this.add(cloud);
 
     this.cloudBox = new Box3().setFromObject(this.cloud);
-    this.audio = new AudioObject('sounds/rain.mp3', this.cloud.position);
     await this.audio.loadAudio();
 
     this.mouseEventHandler.handle(this.cloud);
