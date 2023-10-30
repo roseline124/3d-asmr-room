@@ -1,17 +1,14 @@
 import { AnimationMixer, Clock, LoopRepeat, Object3D } from 'three';
-import { handleIconClick } from '../handlers/handle-icon-click';
-import { EventHandler } from '../models/event-handler';
-import { AudioNode } from '../models/node';
+import { IAudio } from '../models/audio';
+import { ToggleNode } from '../models/node';
 import { LoaderUtil } from '../utils/loader';
-import { AudioObject } from './audio';
 
-export class BookObject extends AudioNode {
+export class BookObject extends ToggleNode {
   private clock = new Clock();
   private mixer!: AnimationMixer;
   private book!: Object3D;
-  private audio!: AudioObject;
 
-  constructor(private mouseEventHandler: EventHandler) {
+  constructor(private audio: IAudio) {
     super();
   }
 
@@ -21,12 +18,7 @@ export class BookObject extends AudioNode {
     this.book = book;
     this.book.visible = false;
     this.add(book);
-
-    this.audio = new AudioObject('sounds/book.mp3', this.book.position);
     await this.audio.loadAudio();
-
-    this.mouseEventHandler.handle(this.book);
-    handleIconClick('book-icon', this);
     this.mixer = new AnimationMixer(book);
     this.animations = animations;
 
@@ -59,7 +51,6 @@ export class BookObject extends AudioNode {
     }
     const delta = this.clock.getDelta();
     this.mixer?.update(delta);
-
     this.audio?.updatePosition(this.book.position);
   }
 }

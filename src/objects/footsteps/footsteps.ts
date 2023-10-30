@@ -5,15 +5,16 @@ import {
   PlaneGeometry,
   Vector3,
 } from 'three';
-import { EventHandler } from '../../models/event-handler';
-import { AudioNode } from '../../models/node';
+import { IAudio } from '../../models/audio';
+import { ToggleNode } from '../../models/node';
 import { LoaderUtil } from '../../utils/loader';
 import { FOOTSTEP_INIT_COUNT } from './constants';
-import { AudioObject } from '../audio';
-import { handleIconClick } from '../../handlers/handle-icon-click';
 
-export class FootStepsObject extends AudioNode {
-  constructor(private eventHandler: EventHandler) {
+export class FootStepsObject extends ToggleNode {
+  private currentFootStepIndex = 0;
+  private prevPosition: Vector3 | null = null;
+
+  constructor(private audios: IAudio[]) {
     super();
   }
 
@@ -27,33 +28,18 @@ export class FootStepsObject extends AudioNode {
       side: DoubleSide,
     });
 
-    this.userData.audioLeft = new AudioObject(
-      'sounds/footstep_left.mp3',
-      new Vector3(0.5, 0.5, 0.5),
-      false,
-    );
-    this.userData.audioRight = new AudioObject(
-      'sounds/footstep_right.mp3',
-      new Vector3(0.5, 0.5, 0.5),
-      false,
-    );
-    await this.userData.audioLeft.loadAudio();
-    await this.userData.audioRight.loadAudio();
+    await Promise.all(this.audios.map((audio) => audio.loadAudio()));
 
     for (let index = 0; index < FOOTSTEP_INIT_COUNT; index++) {
       this.addObject(footstepGeometry, footstepMaterial);
     }
-    this.userData.currentIndex = 0;
-    this.eventHandler.handle(this);
-
-    handleIconClick('footstep-icon', this);
   }
 
   private addObject(geometry: PlaneGeometry, material: MeshBasicMaterial) {
     const footstep = new Mesh(geometry, material);
     footstep.visible = false;
     footstep.rotation.x = -Math.PI / 2;
-    this.children.push(footstep);
+    this.add(footstep);
   }
 
   public toggle(): void {
@@ -63,11 +49,41 @@ export class FootStepsObject extends AudioNode {
 
   update(): void {
     const lastFootstep =
-      this.children[this.userData.currentIndex % FOOTSTEP_INIT_COUNT];
+      this.children[(this.currentFootStepIndex - 1) % FOOTSTEP_INIT_COUNT];
+
     if (!lastFootstep) {
       return;
     }
-    this.userData.audioLeft?.updatePosition(lastFootstep.position);
-    this.userData.audioRight?.updatePosition(lastFootstep.position);
+    this.audios.forEach((audio) => audio.updatePosition(lastFootstep.position));
+  }
+
+  updateFootStepPosition(newPosition: Vector3) {
+    const footstep =
+      this.children[this.currentFootStepIndex % FOOTSTEP_INIT_COUNT];
+    this.currentFootStepIndex++;
+
+    footstep.visible = true;
+    footstep.position.copy(newPosition);
+    footstep.position.y = 0.05;
+
+    /**
+     * footstep angle
+     */
+    if (this.prevPosition != null) {
+      const direction = this.prevPosition.clone().sub(newPosition);
+      const angleRadians = Math.atan2(direction.x, direction.z);
+      footstep.rotation.z = angleRadians;
+    }
+    this.prevPosition = newPosition;
+
+    /**
+     * audio
+     */
+    if (this.currentFootStepIndex % 2 === 1) {
+      footstep.scale.x = -1;
+      this.audios[0].repeat();
+    } else {
+      this.audios[1].repeat();
+    }
   }
 }

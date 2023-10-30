@@ -1,8 +1,8 @@
 import { Object3D, PerspectiveCamera, Raycaster, Vector2 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { EventHandler } from '../models/event-handler';
+import { IEventHandler } from '../models/event-handler';
 
-export class MouseEventHandler implements EventHandler {
+export class MouseEventHandler implements IEventHandler {
   private raycaster = new Raycaster();
   private mouse = new Vector2();
   private isDragging = false;
@@ -10,23 +10,24 @@ export class MouseEventHandler implements EventHandler {
   constructor(
     private camera: PerspectiveCamera,
     private controls: OrbitControls,
+    private object: Object3D,
   ) {}
 
-  handle(object: Object3D) {
+  handle() {
     window.addEventListener(
       'mousedown',
-      (event) => this.onMouseDown(event, object),
+      (event) => this.onMouseDown(event),
       false,
     );
     window.addEventListener(
       'mousemove',
-      (event) => this.onMouseMove(event, object),
+      (event) => this.onMouseMove(event),
       false,
     );
     window.addEventListener('mouseup', this.onMouseUp.bind(this), false);
   }
 
-  private onMouseDown(event: MouseEvent, object: Object3D) {
+  private onMouseDown(event: MouseEvent) {
     event.preventDefault();
 
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -34,7 +35,7 @@ export class MouseEventHandler implements EventHandler {
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
-    let intersects = this.raycaster.intersectObject(object);
+    let intersects = this.raycaster.intersectObject(this.object);
 
     if (intersects.length > 0) {
       this.isDragging = true;
@@ -42,7 +43,7 @@ export class MouseEventHandler implements EventHandler {
     }
   }
 
-  private onMouseMove(event: MouseEvent, object: Object3D) {
+  private onMouseMove(event: MouseEvent) {
     if (!this.isDragging) return;
 
     event.preventDefault();
@@ -53,12 +54,16 @@ export class MouseEventHandler implements EventHandler {
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
     // 레이와 평면이 교차하는 지점 계산
-    let intersects = this.raycaster.intersectObject(object);
+    let intersects = this.raycaster.intersectObject(this.object);
 
     if (intersects.length > 0) {
-      object.position.set(
+      if (!this.object.children[0]) {
+        return;
+      }
+
+      this.object.children[0].position.set(
         intersects[0].point.x,
-        object.position.y,
+        this.object.position.y,
         intersects[0].point.z,
       );
     }

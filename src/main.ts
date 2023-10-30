@@ -6,7 +6,7 @@ import {
   WebGLRenderer,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { MouseEventHandler } from './handlers/handle-mouse-event';
+import { MouseEventHandler } from './handlers/mouse-event-handler';
 import { BookObject } from './objects/book';
 import { CatObject } from './objects/cat';
 import { CloudObject } from './objects/cloud';
@@ -14,7 +14,9 @@ import { KeyboardObject } from './objects/keyboard/keyboard';
 import { LightObject } from './objects/light';
 import { RoomScene } from './scene/room';
 import { FootStepsObject } from './objects/footsteps/footsteps';
-import { FootStepMouseMoveHandler } from './objects/footsteps/handle-footstep-mouse-move';
+import { AudioObject } from './objects/audio';
+import { IconClickHandler } from './handlers/icon-click-handler';
+import { FootStepMouseMoveHandler } from './handlers/footstep-mouse-move-handler';
 
 export const renderer = createWebGLRenderer();
 
@@ -35,14 +37,38 @@ export const controls = new OrbitControls(camera, renderer.domElement);
 
 export const scene = new RoomScene();
 
-scene.setObjects(
+/**
+ * init scene
+ */
+const keyboardObject = new KeyboardObject([
+  new AudioObject('sounds/keyboard1.mp3', false),
+  new AudioObject('sounds/keyboard2.mp3', false),
+  new AudioObject('sounds/keyboard3.mp3', false),
+]);
+const cloudObject = new CloudObject(new AudioObject('sounds/rain.mp3'));
+const bookObject = new BookObject(new AudioObject('sounds/book.mp3'));
+const footstepsObject = new FootStepsObject([
+  new AudioObject('sounds/footstep_left.mp3', false),
+  new AudioObject('sounds/footstep_right.mp3', false),
+]);
+scene.addObjects(
   new LightObject(),
   new CatObject(),
-  new KeyboardObject(new MouseEventHandler(camera, controls)),
-  new CloudObject(new MouseEventHandler(camera, controls)),
-  new BookObject(new MouseEventHandler(camera, controls)),
-  new FootStepsObject(new FootStepMouseMoveHandler(camera, scene)),
+  keyboardObject,
+  cloudObject,
+  bookObject,
+  footstepsObject,
 );
+scene.handleEvents([
+  new MouseEventHandler(camera, controls, keyboardObject),
+  new MouseEventHandler(camera, controls, cloudObject),
+  new MouseEventHandler(camera, controls, bookObject),
+  new IconClickHandler('keyboard-icon', keyboardObject),
+  new IconClickHandler('cloud-icon', cloudObject),
+  new IconClickHandler('book-icon', bookObject),
+  new IconClickHandler('footstep-icon', footstepsObject),
+  new FootStepMouseMoveHandler(camera, scene, footstepsObject),
+]);
 scene.initalize();
 
 /**
