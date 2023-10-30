@@ -6,6 +6,7 @@ import { FootStepsObject } from '../objects/footsteps/footsteps';
 export class FootStepMouseMoveHandler implements IEventHandler {
   private raycaster = new Raycaster();
   private isDragging = false;
+  private mouse = new Vector2();
   private lastFootstepTime = 0;
   private footstepCooldown = 700; // create footstep in every 700ms
 
@@ -18,18 +19,11 @@ export class FootStepMouseMoveHandler implements IEventHandler {
 
   handle() {
     window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-    window.addEventListener('touchstart', this.onTouchStart.bind(this), false);
     window.addEventListener(
       'touchmove',
       (event) => this.onTouchMove(event.touches[0]),
       false,
     );
-    window.addEventListener('touchend', this.onTouchEnd.bind(this), false);
-  }
-
-  private onTouchStart() {
-    this.isDragging = true;
-    this.controls.enabled = false;
   }
 
   private onMouseMove(event: MouseEvent) {
@@ -38,16 +32,7 @@ export class FootStepMouseMoveHandler implements IEventHandler {
   }
 
   private onTouchMove(evnet: Touch) {
-    if (!this.isDragging) {
-      return;
-    }
-
     this.onMove(evnet);
-  }
-
-  private onTouchEnd() {
-    this.isDragging = false;
-    this.controls.enabled = true;
   }
 
   private onMove(event: MouseEvent | Touch) {
